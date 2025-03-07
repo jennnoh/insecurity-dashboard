@@ -160,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let baseRadius = radiusScale(d.totalAttacks);
 
-                // Verify coordinate order: [Latitude, Longitude]
                 const marker = L.circleMarker([d.Latitude, d.Longitude], {
                     radius: baseRadius,
                     fillColor: "#F95454",

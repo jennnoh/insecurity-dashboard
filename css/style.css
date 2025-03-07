@@ -96,13 +96,13 @@ body, html {
 /* Container for the chart SVG */
 #chartContainer {
     width: 100%;
-    margin-bottom: 10px; /* Space between chart and footer */
+    margin-bottom: 10px;
 }
 
 /* Bar Chart Footer */
 #barChartFooter {
     margin-top: 10px;
-    font-size: 0.9rem; /* Adjust as needed */
+    font-size: 0.9rem;
     text-align: center;
     color: #555;
 }
