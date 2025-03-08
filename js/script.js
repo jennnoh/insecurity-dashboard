@@ -1,23 +1,17 @@
-// // Attempt to fetch API data with a CORS proxy
-// d3.json(CORS_PROXY + encodeURIComponent("https://sind-api.herokuapp.com/hdx/v1/aidWorkerKIKA"))
-//     .then(response => JSON.parse(response.contents))  // allorigins wraps data inside 'contents'
-//     .then(data => console.log(data))
-//     .catch(error => console.error("Error loading API data:", error));
+d3.json("https://sind-api.herokuapp.com/hdx/v1/aidWorkerKIKA")
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error("Error loading API data:", error);
+    });
+
 
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Load the API
-    const CORS_PROXY = "https://api.allorigins.win/get?url=";
-    const API_URL = "https://sind-api.herokuapp.com/hdx/v1/aidWorkerKIKA";
-
-    d3.json(CORS_PROXY + encodeURIComponent(API_URL))
-        .then(response => JSON.parse(response.contents))
-        .then(data => {
-            // console.log(data);
-            return data;
-        })
-        .then(data => data.map(d => {
+    // Load the CSV data
+    d3.csv("https://raw.githubusercontent.com/jennnoh/insecurity-dashboard/main/data/aidworkerkika.csv", d => {
         return {
             Date: new Date(d.Date),
             EventDescription: d["Event Description"],
@@ -31,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             AidWorkersKilledInCaptivity: +d["Aid Workers Killed in Captivity"],
             SiNDEventID: d["SiND Event ID"]
         };
-    })).then(data => {
+    }).then(data => {
         // Compute total attacks for each record
         data.forEach(d => {
             d.totalAttacks = d.AidWorkersKilled +
@@ -62,8 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }).addTo(map);
 
         // Create a Marker Cluster Group for markers with clustering disabled at very high zoom
-        let markersLayer = L.markerClusterGroup({disableClusteringAtZoom: 8});
-
+        let markersLayer = L.markerClusterGroup({
+            disableClusteringAtZoom: 8
+        });
         map.addLayer(markersLayer);
 
         // --- Add Zoom Listener to Dynamically Scale Marker Sizes ---
@@ -71,10 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
         map.on('zoomend', function() {
             let currentZoom = map.getZoom();
             let scaleFactor = currentZoom / initialZoom;
-
-            markersLayer.eachLayer(marker => {
-                marker.setRadius(marker.options.baseRadius * scaleFactor);
-
+            // Iterate over each marker and update its radius using the stored baseRadius
+            markersLayer.eachLayer(function(marker) {
+                // marker.options.baseRadius was stored when the marker was created
+                let newRadius = marker.options.baseRadius * scaleFactor;
+                marker.setRadius(newRadius);
             });
         });
 
@@ -123,11 +119,37 @@ document.addEventListener('DOMContentLoaded', () => {
             const endDateStr = endDateInput.valueAsDate.toLocaleDateString();
 
             document.getElementById("barChartHeader").innerHTML =
+                `<span style="color: #EFB036; font-size: 1.3rem; font-weight: normal;">${totalAttacksFiltered}</span> of 
+   <span style="color: #2C3930; font-size: 1.3rem; font-weight: normal;">${totalAttacksAll}</span> total attacks<br>
+   between <span style="font-weight: normal; font-size: 1rem; ">${startDateStr}</span> and 
+   <span style="font-weight: normal; font-size: 1rem; ">${endDateStr}</span>`;
 
-                `<span class="header-number">${totalAttacksFiltered}</span> of 
-                 <span class="header-total">${totalAttacksAll}</span> total attacks<br>
-                 between <span class="header-date">${startDateStr}</span> and 
-                 <span class="header-date">${endDateStr}</span>`;
+            let footerText = "";
+            switch(selectedAttack) {
+                case "killed":
+                    footerText = `<span style="color: #EFB036; font-weight: bold;">${d3.sum(filteredData, d => d.AidWorkersKilled)}</span> killed aid workers`;
+                    break;
+                case "injured":
+                    footerText = `<span style="color: #69b3a2; font-weight: bold;">${d3.sum(filteredData, d => d.AidWorkersInjured)}</span> injured aid workers`;
+                    break;
+                case "kidnapped":
+                    footerText = `<span style="color: #81BFDA; font-weight: bold;">${d3.sum(filteredData, d => d.AidWorkersKidnapped)}</span> kidnapped aid workers`;
+                    break;
+                case "arrested":
+                    footerText = `<span style="color: #f39c12; font-weight: bold;">${d3.sum(filteredData, d => d.AidWorkersArrested)}</span> arrested aid workers`;
+                    break;
+                case "captivity":
+                    footerText = `<span style="color: #c0392b; font-weight: bold;">${d3.sum(filteredData, d => d.AidWorkersKilledInCaptivity)}</span> killed in captivity`;
+                    break;
+                default:
+                    footerText = `<span style="color: #EFB036; font-weight: bold;">Killed: ${d3.sum(filteredData, d => d.AidWorkersKilled)}</span>, 
+                                  <span style="color: #69b3a2; font-weight: bold;">Injured: ${d3.sum(filteredData, d => d.AidWorkersInjured)}</span>, 
+                                  <span style="color: #81BFDA; font-weight: bold;">Kidnapped: ${d3.sum(filteredData, d => d.AidWorkersKidnapped)}</span>, 
+                                  <span style="color: #f39c12; font-weight: bold;">Arrested: ${d3.sum(filteredData, d => d.AidWorkersArrested)}</span>, 
+                                  <span style="color: #c0392b; font-weight: bold;">Killed in Captivity: ${d3.sum(filteredData, d => d.AidWorkersKilledInCaptivity)}</span>`;
+                    break;
+            }
+            document.getElementById("barChartFooter").innerHTML = footerText;
 
             // --- Update the Map ---
             markersLayer.clearLayers();
