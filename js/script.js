@@ -1,3 +1,4 @@
+
 d3.json("https://sind-api.herokuapp.com/hdx/v1/aidWorkerKIKA")
     .then(data => {
         console.log(data);
@@ -5,7 +6,6 @@ d3.json("https://sind-api.herokuapp.com/hdx/v1/aidWorkerKIKA")
     .catch(error => {
         console.error("Error loading API data:", error);
     });
-
 
 
 document.addEventListener('DOMContentLoaded', () => {
