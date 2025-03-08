@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     d3.json(CORS_PROXY + encodeURIComponent(API_URL))
         .then(response => JSON.parse(response.contents))
         .then(data => {
-            console.log(data);
+            // console.log(data);
             return data;
         })
         .then(data => data.map(d => {
