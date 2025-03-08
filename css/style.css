@@ -162,3 +162,21 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.8rem;
     color: #333333;
 }
+
+
+.header-number {
+    color: #EFB036;
+    font-size: 1.3rem;
+    font-weight: normal;
+}
+
+.header-total {
+    color: #2C3930;
+    font-size: 1.3rem;
+    font-weight: normal;
+}
+
+.header-date {
+    font-weight: normal;
+    font-size: 1rem;
+}
