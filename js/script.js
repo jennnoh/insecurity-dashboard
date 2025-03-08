@@ -1,4 +1,3 @@
-
 // // Attempt to fetch API data with a CORS proxy
 // d3.json(CORS_PROXY + encodeURIComponent("https://sind-api.herokuapp.com/hdx/v1/aidWorkerKIKA"))
 //     .then(response => JSON.parse(response.contents))  // allorigins wraps data inside 'contents'
