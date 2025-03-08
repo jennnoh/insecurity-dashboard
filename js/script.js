@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Create a Marker Cluster Group for markers with clustering disabled at very high zoom
         let markersLayer = L.markerClusterGroup({disableClusteringAtZoom: 8});
+
         map.addLayer(markersLayer);
 
         // --- Add Zoom Listener to Dynamically Scale Marker Sizes ---
@@ -69,8 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
         map.on('zoomend', function() {
             let currentZoom = map.getZoom();
             let scaleFactor = currentZoom / initialZoom;
+
             markersLayer.eachLayer(marker => {
                 marker.setRadius(marker.options.baseRadius * scaleFactor);
+
             });
         });
 
@@ -119,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const endDateStr = endDateInput.valueAsDate.toLocaleDateString();
 
             document.getElementById("barChartHeader").innerHTML =
+
                 `<span class="header-number">${totalAttacksFiltered}</span> of 
                  <span class="header-total">${totalAttacksAll}</span> total attacks<br>
                  between <span class="header-date">${startDateStr}</span> and 
