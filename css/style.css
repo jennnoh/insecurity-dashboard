@@ -7,7 +7,7 @@
 
 body, html {
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 /* Dashboard Layout */
@@ -16,7 +16,7 @@ body, html {
     height: 100vh;
 }
 
-/* Left Panel (Title, Filters & Bar Chart) */
+/* Left Panel (Filters & Chart) */
 #left-panel {
     width: 35%;
     padding: 15px;
@@ -34,11 +34,10 @@ body, html {
 
 /* Right Panel (Map) */
 #right-panel {
-    width: 70%;
+    width: 65%;
     position: relative;
 }
 
-/* Map Container */
 #map {
     width: 100%;
     height: 100%;
@@ -49,9 +48,18 @@ body, html {
     margin-bottom: 20px;
 }
 
-.filter-item {
+.filter-group {
     margin-bottom: 10px;
+}
 
+.filter-group.horizontal {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-item {
+    flex: 1;
+    min-width: 200px;
 }
 
 .filter-item label {
@@ -60,54 +68,43 @@ body, html {
     font-weight: normal;
     font-size: 0.8rem;
     color: grey;
-    font-family: 'Raleway', sans-serif;
 }
 
-.filter-item input,
-.filter-item select {
+.filter-item select,
+.filter-item input {
     width: 100%;
     padding: 5px;
     font-size: 0.8rem;
-    font-family: 'Raleway', sans-serif;
+}
+
+/* Divider between filter groups */
+.filter-divider {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
 }
 
 /* Bar Chart Container */
 #barChart {
-    display: flex;
-    flex-direction: column;
     background: #fff;
     padding: 5px;
     border: 1px solid #ddd;
+    margin-top: 20px;
 }
 
-
-/* Bar Chart Header */
 #barChartHeader {
     margin-bottom: 10px;
-    font-size: 1.2rem; /* Adjust as needed */
+    font-size: 1.2rem;
     text-align: left;
-}
-
-#barChart h2 {
-    font-size: 1rem;
     font-weight: normal;
 }
 
-/* Container for the chart SVG */
 #chartContainer {
     width: 100%;
     margin-bottom: 10px;
 }
 
-/* Bar Chart Footer */
-#barChartFooter {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    text-align: center;
-    color: #555;
-}
-
-/* Tooltip Styling for Bar Chart */
+/* Tooltip Styling */
 .tooltip {
     position: absolute;
     background-color: white;
@@ -121,63 +118,36 @@ body, html {
     transition: opacity 0.2s ease;
 }
 
-/* Styling for horizontal grid lines in the bar chart */
-.grid line {
-    stroke: lightgrey;
-    stroke-opacity: 0.7;
-    shape-rendering: crispEdges;
-}
-
-.grid path {
-    stroke-width: 0;
-}
-
-body, html {
-    height: 100%;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 100;
-}
-
-
-h1, h2, h3, h4, h5, h6 {
-    font-weight: normal;
-}
-
-#barChartFooter {
-    display: none;
-}
-
-.axis text {
-    font-family: 'Raleway', sans-serif;
-    font-size: 0.9rem;
-    fill: #A9A9A9;
-}
-
-.title-part1 {
-    font-size: 1rem;
-    color: #999999;
-}
-
-.title-part2 {
-    font-size: 1.8rem;
-    color: #333333;
-}
-
-
+/* Header Number Styling */
 .header-number {
     color: #EFB036;
     font-size: 1.3rem;
-    font-weight: normal;
 }
-
 .header-total {
     color: #2C3930;
     font-size: 1.3rem;
-    font-weight: normal;
 }
-
 .header-date {
-    font-weight: normal;
+    color: #2C3930;
     font-size: 1rem;
 }
 
+/* Title Styling */
+.title-part1 {
+    font-size: 1rem;
+    color: #999;
+    font-weight: normal;
+}
+.title-part2 {
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: normal;
+}
+
+.filter-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #fff;
+}
