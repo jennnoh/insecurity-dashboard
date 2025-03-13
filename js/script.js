@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     // Helper: Remove brackets and quotes from list-like strings
     function cleanListValue(val) {
@@ -9,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Select2 on all multi-select dropdowns
     $("#datasetSelect, #incidentTypeSelect, #sectorAffectedSelect, #launchTypeSelect, #typeOfSVSelect, #victimSexSelect, #ageGroupSelect").select2();
+
 
     // Force default selections for categorical filters (all options selected)
     ["incidentTypeSelect", "sectorAffectedSelect", "launchTypeSelect", "typeOfSVSelect", "victimSexSelect", "ageGroupSelect"].forEach(id => {
@@ -100,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             $("#datasetSelect").on("change", () => {
                 updateDynamicFilters();
                 updateDashboard();
+
             });
             $("#incidentTypeSelect, #sectorAffectedSelect, #launchTypeSelect, #typeOfSVSelect, #victimSexSelect, #ageGroupSelect")
                 .on("change", updateDashboard);
@@ -222,10 +225,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     countsByBucket[key][category] += 1;
                 }
 
+
                 // Build separate arrays for each category using globalFiltered
                 const aidFiltered = globalFiltered.filter(d => d.dataset.includes("aid_workers"));
                 const weaponsFiltered = globalFiltered.filter(d => d.dataset.includes("weapons"));
                 const crsvFiltered = globalFiltered.filter(d => d.dataset.includes("crsv"));
+
 
                 if (chartKeys.includes("aid_workers")) {
                     aidFiltered.forEach(d => addCount(d.Date, "aid_workers"));
