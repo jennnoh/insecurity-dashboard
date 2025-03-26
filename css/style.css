@@ -120,7 +120,7 @@ body, html {
 
 /* Header Number Styling */
 .header-number {
-    color: #EFB036;
+    color: #8B0000;
     font-size: 1.3rem;
 }
 .header-total {
@@ -151,3 +151,70 @@ body, html {
     margin-bottom: 15px;
     background-color: #fff;
 }
+
+/* Target the tags in the multi-select (the grey background "chips") */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    font-size: 0.8rem; /* or any smaller value */
+}
+/* If needed, also adjust the “x” (remove button) inside the chips: */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    font-size: 0.8rem;
+}
+
+/*
+  1) The .treeselect or a more specific parent class ensures
+     you only affect the Treeselect component, not other elements.
+  2) The .treeselect-input__tags-element is the class you see.
+  3) [tag-id="aid_workers"] is the attribute that identifies the dataset.
+*/
+.treeselect .treeselect-input__tags-element[tag-id="aid_workers"] {
+    background-color: #66c2a5 !important; /* Aid Workers color */
+    color: #fff !important;
+    border-radius: 4px !important;
+    padding: 3px 6px !important;
+}
+
+.treeselect .treeselect-input__tags-element[tag-id="weapons"] {
+    background-color: #fc8d62 !important; /* Explosive Weapons color */
+    color: #fff !important;
+    border-radius: 4px !important;
+    padding: 3px 6px !important;
+}
+
+.treeselect .treeselect-input__tags-element[tag-id="crsv"] {
+    background-color: #8da0cb !important; /* CRSV color */
+    color: #fff !important;
+    border-radius: 4px !important;
+    padding: 3px 6px !important;
+}
+
+/* If you also want to change the "x" (remove) icon color: */
+.treeselect .treeselect-input__tags-element[tag-id="aid_workers"] .treeselect-input__tags-cross svg line {
+    stroke: #fff !important;
+}
+
+/* 1) Gray check icon (the check mark) */
+.treeselect .treeselect-list__item--checked .treeselect-list__item-checkbox-icon svg polyline {
+    stroke: #888 !important;
+    fill: none !important;
+}
+
+/* 2) Light gray background for the entire row when checked */
+.treeselect .treeselect-list__item--checked {
+    background-color: #f2f2f2 !important;
+    color: #333 !important;
+}
+
+/* 3) If a real checkbox is visible, set accent-color or fallback:
+   (This might not be necessary if the library hides the <input> behind an SVG.) */
+.treeselect .treeselect-list__item-checkbox[type="checkbox"]:checked {
+    accent-color: #aaa; /* modern approach, not universal */
+    background-color: #aaa !important; /* fallback */
+    border-color: #999 !important;
+}
+
+.treeselect .treeselect-list__item--checked .treeselect-list__item-checkbox-container {
+    background-color: #ccc !important;  /* muted gray background */
+    border: 1px solid #aaa !important;  /* muted gray border */
+}
+

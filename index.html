@@ -2,150 +2,109 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+
     <title>Insecurity Insight Dashboard</title>
+    <!-- Bootstrap CSS (v5) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" crossorigin=""/>
     <!-- MarkerCluster CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-    <!-- Select2 CSS for multi-select dropdowns -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Chosen CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" />
+    <!-- Treeselect CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/treeselectjs@0.12.3/dist/treeselectjs.css" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Remove bold from dataset labels */
+        .dataset-label {
+            font-weight: normal;
+            display: inline-block;
+            padding: 3px 8px;
+            margin-left: 5px;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .dataset-aidworkers { background-color: #66c2a5; }
+        .dataset-weapons   { background-color: #fc8d62; }
+        .dataset-crsv      { background-color: #8da0cb; }
+
+        /* Ensure left panel scrolls */
+        #left-panel {
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Style for the Treeselect container */
+        #combinedFilter {
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 4px;
+            background: #fff;
+            margin-bottom: 15px;
+        }
+
+    </style>
 </head>
 <body>
-<div id="dashboard">
+<div id="dashboard" class="d-flex">
     <!-- Left Panel: Filters and Chart -->
-    <div id="left-panel">
-        <h1>
-            <span class="title-part1">Insecurity Insight</span><br>
-            <span class="title-part2">Dashboard</span>
-        </h1>
-        <div id="filters">
-            <!-- Group 1: Dataset Selection -->
+    <div id="left-panel" class="p-3" style="width: 35%; background-color: #f9f9f9;">
+        <h1 class="text-center">Insecurity Insight<br>Dashboard</h1>
+
+        <div id="filters" class="mt-3">
+            <!-- Unified Hierarchical Filter -->
             <div class="filter-group">
-                <div class="filter-item">
-                    <label for="datasetSelect">Select Dataset(s):</label>
-                    <select id="datasetSelect" multiple>
-                        <option value="aid_workers" selected>Aid Workers (KIKA)</option>
-                        <option value="weapons" selected>Explosive Weapons</option>
-                        <option value="crsv" selected>CRSV</option>
-                    </select>
-                </div>
+                <label for="combinedFilter">Select Datasets:</label>
+                <div id="combinedFilter"></div>
             </div>
-            <hr class="filter-divider">
-            <!-- Group 2: Date Range -->
-            <div class="filter-group horizontal">
-                <div class="filter-item">
+
+            <!-- Date Range -->
+            <div class="filter-group mt-3 row">
+                <div class="col">
                     <label for="startDate">Start Date:</label>
-                    <input type="date" id="startDate">
+                    <input type="date" id="startDate" class="form-control">
                 </div>
-                <div class="filter-item">
+                <div class="col">
                     <label for="endDate">End Date:</label>
-                    <input type="date" id="endDate">
-                </div>
-            </div>
-            <hr class="filter-divider">
-            <!-- Group 3: Aid Workers Filters -->
-            <div id="aidWorkersFilter">
-                <div class="filter-group">
-                    <div class="filter-item">
-                        <label for="incidentTypeSelect">Select Incident Type (Aid Workers):</label>
-                        <select id="incidentTypeSelect" multiple>
-                            <option value="killed" selected>Killed</option>
-                            <option value="injured" selected>Injured</option>
-                            <option value="kidnapped" selected>Kidnapped</option>
-                            <option value="arrested" selected>Arrested</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <hr class="filter-divider">
-            <!-- Group 4: Weapons Filters -->
-            <div id="weaponsFilter">
-                <div class="filter-group">
-                    <div class="filter-item">
-                        <label for="sectorAffectedSelect">Select Sector Affected (Weapons):</label>
-                        <select id="sectorAffectedSelect" multiple>
-                            <option value="Aid Operations" selected>Aid Operations</option>
-                            <option value="Health care" selected>Health care</option>
-                            <option value="Food Security" selected>Food Security</option>
-                            <option value="Education" selected>Education</option>
-                            <option value="Protection" selected>Protection</option>
-                        </select>
-                    </div>
-                </div>
-                <hr class="filter-divider">
-                <div class="filter-group">
-                    <div class="filter-item">
-                        <label for="launchTypeSelect">Select Launch Type (Weapons):</label>
-                        <select id="launchTypeSelect" multiple>
-                            <option value="Air-launched (drone, plane, helicopter)" selected>Air-launched (drone, plane, helicopter)</option>
-                            <option value="Ground-launched" selected>Ground-launched</option>
-                            <option value="Directly emplaced" selected>Directly emplaced</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <hr class="filter-divider">
-            <!-- Group 5: CRSV Filters -->
-            <div id="crsvFilter">
-                <div class="filter-group">
-                    <div class="filter-item">
-                        <label for="typeOfSVSelect">Select Type of SV (CRSV):</label>
-                        <select id="typeOfSVSelect" multiple>
-                            <option value="Rape" selected>Rape</option>
-                            <option value="Sexual slavery" selected>Sexual slavery</option>
-                            <option value="Forced prostitution" selected>Forced prostitution</option>
-                        </select>
-                    </div>
-                </div>
-                <hr class="filter-divider">
-                <div class="filter-group">
-                    <div class="filter-item">
-                        <label for="victimSexSelect">Select Survivor/Victim Sex (CRSV):</label>
-                        <select id="victimSexSelect" multiple>
-                            <option value="Male" selected>Male</option>
-                            <option value="Female" selected>Female</option>
-                        </select>
-                    </div>
-                </div>
-                <hr class="filter-divider">
-                <div class="filter-group">
-                    <div class="filter-item">
-                        <label for="ageGroupSelect">Select Adult or Minor (CRSV):</label>
-                        <select id="ageGroupSelect" multiple>
-                            <option value="Adult" selected>Adult</option>
-                            <option value="Minor" selected>Minor</option>
-                        </select>
-                    </div>
+                    <input type="date" id="endDate" class="form-control">
                 </div>
             </div>
         </div>
+
         <!-- Bar Chart Section -->
-        <div id="barChart">
+        <div id="barChart" class="mt-3">
             <h2 id="barChartHeader"></h2>
             <div id="chartContainer"></div>
         </div>
     </div>
+
     <!-- Right Panel: Map -->
-    <div id="right-panel">
-        <div id="map"></div>
+    <div id="right-panel" style="width: 65%; position: relative;">
+        <div id="map" style="width: 100%; height: 100vh;"></div>
     </div>
 </div>
 
-<!-- jQuery (required for Select2) -->
+<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Select2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin=""></script>
 <!-- MarkerCluster JS -->
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <!-- D3 JS -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
-<!-- Custom JS -->
-<script src="js/script.js" defer></script>
+<!-- Chosen JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+<!-- Treeselect UMD JS -->
+<script src="https://cdn.jsdelivr.net/npm/treeselectjs@0.12.3/dist/treeselectjs.umd.js"></script>
+<!-- Main JS (entry point) -->
+<script type="module" src="js/main.js"></script>
+
+<div class="tooltip"></div>
+
 </body>
 </html>
