@@ -43,7 +43,7 @@ export function initMap() {
                     text-align: center;
                     font-weight: bold;
                      font-size: 10px;
-                ">${count}</div>`,
+                "></div>`,
                 className: 'marker-cluster',
                 iconSize: L.point(size, size)
             });

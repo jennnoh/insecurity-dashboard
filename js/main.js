@@ -52,15 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById("endDate").valueAsDate = maxDate;
 
         // Dashboard update function.
+        // In main.js (simplified)
         function updateDashboard() {
             const filterValues = getFilterValues();
-            // Preliminary filtering by date only.
             const prelimFiltered = data.filter(d => d.Date >= filterValues.startDate && d.Date <= filterValues.endDate);
-            // Full filtering using unified filter values.
             const filteredData = filterData(data, filterValues);
             updateMapMarkers(markersLayer, filteredData, tooltip);
-            updateBarChart(filteredData, prelimFiltered, filterValues);
+            updateBarChart(filteredData, prelimFiltered, data.length, filterValues);
         }
+
 
         addFilterListeners(updateDashboard);
         updateDashboard();
