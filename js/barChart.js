@@ -4,11 +4,17 @@ const weaponsSectorLeaves = ["aid_operations", "health_care", "food_security", "
 const weaponsLaunchLeaves = ["air_launched", "air_launched_plane", "air_launched_drone", "air_launched_helicopter", "ground_launched", "directly_emplaced", "unspecified_launch_method"];
 const crsvLeaves = ["rape", "sexual_slavery", "forced_prostitution", "male", "female", "adult", "minor"];
 
+function formatDateAsSelected(date) {
+    // date.toISOString() always returns a string in the form "YYYY-MM-DDT00:00:00.000Z"
+    const [year, month, day] = date.toISOString().split('T')[0].split('-');
+    return `${month}/${day}/${year}`;
+}
+
 export function updateBarChart(filteredData, prelimFiltered, fullCount, filterValues) {
     // Update header using fullCount for overall total.
     document.getElementById("barChartHeader").innerHTML =
         `<span class="header-number">${filteredData.length}</span> of <span class="header-total">${fullCount}</span> total incidents<br>` +
-        `happened between <span class="header-date">${filterValues.startDate.toLocaleDateString()}</span> and <span class="header-date">${filterValues.endDate.toLocaleDateString()}</span>`;
+        `happened between <span class="header-date">${formatDateAsSelected(filterValues.startDate)}</span> and <span class="header-date">${formatDateAsSelected(filterValues.endDate)}</span>`;
 
     // Determine time grouping.
     const totalDays = (filterValues.endDate - filterValues.startDate) / (1000 * 3600 * 24);
