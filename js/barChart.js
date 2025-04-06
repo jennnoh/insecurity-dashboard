@@ -30,6 +30,18 @@ export function updateBarChart(filteredData, prelimFiltered, fullCount, filterVa
         tickFormat = d3.timeFormat("%b %d");
     }
 
+    let tooltipFormat;
+    if (totalDays > 90) {
+        // Aggregated by month.
+        tooltipFormat = d3.timeFormat("%b %Y");
+    } else if (totalDays > 30) {
+        // Aggregated by week.
+        tooltipFormat = d3.timeFormat("%b %d");
+    } else {
+        // Aggregated by day.
+        tooltipFormat = d3.timeFormat("%b %d");
+    }
+
     // Aggregate filtered data into time buckets.
     let countsByBucket = {};
     function addCount(date, key) {
@@ -138,7 +150,7 @@ export function updateBarChart(filteredData, prelimFiltered, fullCount, filterVa
         .attr("fill-opacity", 0.7)
         .on("mouseover", function(event, d) {
             d3.select("body").select(".tooltip")
-                .html(`Date: <b>${d.date.toLocaleDateString()}</b><br>Total Incidents: <b>${d.total}</b>`)
+                .html(`Date: <b>${tooltipFormat(d.date)}</b><br>Total Incidents: <b>${d.total}</b>`)
                 .style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY - 28) + "px")
                 .transition().duration(200).style("opacity", 0.9);
@@ -184,7 +196,7 @@ export function updateBarChart(filteredData, prelimFiltered, fullCount, filterVa
                 .attr("fill", color(key))
                 .on("mouseover", function(event, d) {
                     d3.select("body").select(".tooltip")
-                        .html(`Date: <b>${d.date.toLocaleDateString()}</b><br>${displayNames[key]} <b>${d[key]}</b>`)
+                        .html(`Date:  <b>${tooltipFormat(d.date)}</b><br>${displayNames[key]} <b>${d[key]}</b>`)
                         .style("left", (event.pageX + 10) + "px")
                         .style("top", (event.pageY - 28) + "px")
                         .transition().duration(200).style("opacity", 0.9);
