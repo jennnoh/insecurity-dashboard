@@ -132,7 +132,7 @@ export function initMap() {
             border-radius: 50%;
             background-color: #e02944;
           "></span>
-          Single attack
+          Single Incidents
         </div>
         <div style="display: flex; align-items: center;">
           <!-- Grouped Attacks: semi-transparent fill with darker border -->
@@ -145,7 +145,7 @@ export function initMap() {
             background-color: rgba(178,34,34,0.3);
             border: 2px solid #e02944;
           "></span>
-          Grouped attacks
+          Grouped Incidents
         </div>
       </div>
     `;
