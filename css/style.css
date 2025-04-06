@@ -8,23 +8,33 @@
 body, html {
     height: 100%;
     font-family: 'Raleway', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 /* Dashboard Layout */
 #dashboard {
-    display: flex;
-    height: 100vh;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /* Remove the flex layout */
+    display: block;
 }
 
 /* Left Panel (Filters & Chart) */
 #left-panel {
-    width: 35%;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 320px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 8px;
     padding: 15px;
-    background: #f9f9f9;
+    z-index: 9999;
+    max-height: 80vh;
     overflow-y: auto;
-    border-right: 1px solid #ddd;
 }
-
 #left-panel h1 {
     margin-bottom: 15px;
     text-align: center;
@@ -34,11 +44,14 @@ body, html {
 
 /* Right Panel (Map) */
 #right-panel {
-    width: 65%;
+    width: 100%;
     position: relative;
 }
 
 #map {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
 }
@@ -64,9 +77,9 @@ body, html {
 
 .filter-item label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     font-weight: normal;
-    font-size: 0.8rem;
+    font-size: 0.5rem;
     color: grey;
 }
 
@@ -74,7 +87,7 @@ body, html {
 .filter-item input {
     width: 100%;
     padding: 5px;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
 }
 
 /* Divider between filter groups */
@@ -116,6 +129,8 @@ body, html {
     box-shadow: 0px 0px 6px rgba(0,0,0,0.1);
     opacity: 0;
     transition: opacity 0.2s ease;
+    z-index: 10000;
+
 }
 
 /* Header Number Styling */
@@ -129,7 +144,7 @@ body, html {
 }
 .header-date {
     color: #2C3930;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
 /* Title Styling */
@@ -218,3 +233,18 @@ body, html {
     border: 1px solid #aaa !important;  /* muted gray border */
 }
 
+#data-notes p {
+    margin: 0;
+}
+
+
+/* Adjust the font size for date inputs */
+#startDate,
+#endDate {
+    font-size: 0.9rem;
+}
+
+#filters label {
+    font-size: 0.8rem !important;
+    color: grey !important;
+}

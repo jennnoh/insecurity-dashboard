@@ -1,4 +1,9 @@
 // barChart.js – builds/updates the line chart with overlaid total bars and header.
+const aidWorkersLeaves = ["killed", "injured", "kidnapped", "arrested"];
+const weaponsSectorLeaves = ["aid_operations", "health_care", "food_security", "education", "idp_refugee_protection"];
+const weaponsLaunchLeaves = ["air_launched", "air_launched_plane", "air_launched_drone", "air_launched_helicopter", "ground_launched", "directly_emplaced", "unspecified_launch_method"];
+const crsvLeaves = ["rape", "sexual_slavery", "forced_prostitution", "male", "female", "adult", "minor"];
+
 export function updateBarChart(filteredData, prelimFiltered, fullCount, filterValues) {
     // Update header using fullCount for overall total.
     document.getElementById("barChartHeader").innerHTML =
@@ -29,11 +34,37 @@ export function updateBarChart(filteredData, prelimFiltered, fullCount, filterVa
         }
         countsByBucket[bKey][key] += 1;
     }
+
     filteredData.forEach(d => {
-        if (d.dataset.includes("aid_workers")) addCount(d.Date, "aid_workers");
-        if (d.dataset.includes("weapons")) addCount(d.Date, "weapons");
-        if (d.dataset.includes("crsv")) addCount(d.Date, "crsv");
+        // Make sure filterValues is defined and has a "filters" array
+        if (!filterValues || !Array.isArray(filterValues.filters)) return;
+
+        // If "aid_workers" is in the record AND the user has selected any of the Aid Workers leaves
+        if (
+            d.dataset.includes("aid_workers") &&
+            filterValues.filters.some(f => aidWorkersLeaves.includes(f))
+        ) {
+            addCount(d.Date, "aid_workers");
+        }
+
+        // If "weapons" is in the record AND the user has selected any of the Weapons leaves
+        if (
+            d.dataset.includes("weapons") &&
+            filterValues.filters.some(f => weaponsSectorLeaves.includes(f) || weaponsLaunchLeaves.includes(f))
+        ) {
+            addCount(d.Date, "weapons");
+        }
+
+        // If "crsv" is in the record AND the user has selected any of the CRSV leaves
+        if (
+            d.dataset.includes("crsv") &&
+            filterValues.filters.some(f => crsvLeaves.includes(f))
+        ) {
+            addCount(d.Date, "crsv");
+        }
     });
+
+
     const aggregatedData = Object.values(countsByBucket).sort((a, b) => a.date - b.date);
     aggregatedData.forEach(d => {
         d.total = d.aid_workers + d.weapons + d.crsv;

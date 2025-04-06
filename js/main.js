@@ -14,7 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     d3.csv("data/merged_dashboard_data.csv").then(rawData => {
         // Process CSV data.
         // Convert date strings, parse numeric fields, and parse the dataset field.
-        const data = rawData.map(d => {
+        // Count incidents with missing lat/lon (censored by HDX)
+        const removedIncidentsCount = rawData.filter(d => d.Latitude.trim() === "" || d.Longitude.trim() === "").length;
+
+        // Filter out records without latitude or longitude values.
+        const filteredRawData = rawData.filter(d => d.Latitude.trim() !== "" && d.Longitude.trim() !== "");
+
+        const data = filteredRawData.map(d => {
             const dateStr = d.Date.split("T")[0];  // works for both "YYYY-MM-DD" and "YYYY-MM-DDT..."
             let dsArr = [];
             try {
@@ -43,6 +49,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 dataset: dsArr
             };
         });
+        // Count CRSV records that are missing an EventDescription.
+        const crsvMissingDescriptionCount = data.filter(d =>
+            d.dataset.includes("crsv") &&
+            (!d.EventDescription || d.EventDescription.trim() === "")
+        ).length;
+
+        // Update the note container with your custom messages.
+        const notesContainer = document.getElementById("data-notes");
+        notesContainer.innerHTML = `
+        <p>* ${removedIncidentsCount} incidents were excluded as censored by HDX.</p>
+        <p>** CRSV dataset records do not include an Event Description.</p>
+    `;
 
         // Set default date range based on CSV data.
         const dates = data.map(d => d.Date);
